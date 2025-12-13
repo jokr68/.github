@@ -26,7 +26,7 @@ This commit addresses an issue where negated command-line arguments (e.g., `--no
 
 3. **Test Coverage** (`tests/test-arg-parser.cpp`):
    - Added test case for negated arguments
-   - Tests that `--no-mmap` is properly parsed with `LLAMA_EXAMPLE_COMMON`
+   - Tests that `--no-mmap` is properly parsed with `LLAMA_EXAMPLE_COMMON` (a test context flag)
 
 4. **Usage Update** (`tools/server/server-models.cpp`):
    - Updated function call from `common_params_parse` to `common_params_to_map`
