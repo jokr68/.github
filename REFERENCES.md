@@ -11,8 +11,8 @@ This document tracks important technical references and commits from related pro
 ### Key Changes
 
 1. **Extended Matrix Size Support**
-   - Previous implementation was limited to n ≤ 64, k ≤ 32
-   - New implementation supports larger dimensions using cuBLAS
+   - Previous implementation was limited to n ≤ 64, k ≤ 32 (where n is the triangular matrix dimension and k is the number of right-hand side vectors)
+   - New implementation supports arbitrary dimensions using cuBLAS
 
 2. **Dual Implementation Strategy**
    - Fast kernel path: For small matrices (n ≤ 64, k ≤ 32) using warp-based parallel reduction
@@ -32,8 +32,8 @@ This document tracks important technical references and commits from related pro
 
 The implementation uses:
 - `cublasStrsmBatched` for solving triangular systems in batches
-- Math mode switching for numerical accuracy
-- Proper handling of strides and batching across multiple dimensions
+- Math mode switching between `CUBLAS_DEFAULT_MATH` and `CUBLAS_TF32_TENSOR_OP_MATH` to ensure numerical accuracy while maintaining performance
+- Proper handling of strides and batching across multiple dimensions (ne02, ne03) for efficient memory access patterns
 
 ### Files Modified
 - `ggml/src/ggml-cuda/ggml-cuda.cu`
