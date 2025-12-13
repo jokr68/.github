@@ -23,7 +23,6 @@ body:
     attributes:
       label: What have you tried?
       description: Please share any code you've already tried
-      render: shell
     validations:
       required: false
 
@@ -32,7 +31,6 @@ body:
     attributes:
       label: Error messages
       description: Please paste any error messages you're getting
-      render: shell
     validations:
       required: false
 
