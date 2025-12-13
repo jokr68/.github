@@ -78,7 +78,6 @@ body:
     attributes:
       label: Relevant Log Output
       description: Please copy and paste any relevant log output or error messages
-      render: shell
     validations:
       required: false
 
