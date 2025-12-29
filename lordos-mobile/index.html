@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LORD'OS Mobile – وكيل AtheerGAI Omega</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/mobile.css">
+  <meta name="theme-color" content="#0d1117" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="logo">🜲</span>
+      <div>
+        <h1>LORD'OS Mobile</h1>
+        <p>وكيل عام – AtheerGAI Omega (شات + رفع ملفات)</p>
+      </div>
+    </div>
+    <button id="btnSettings" class="ghost">الإعدادات</button>
+  </header>
+
+  <main class="layout">
+    <section class="panel cloud">
+      <div class="panel-header">
+        <h2>Windows سحابي (عرض فقط)</h2>
+        <span class="badge">الأوامر عبر الوكيل</span>
+      </div>
+      <div class="cloud-window">
+        <div class="cloud-status">🔒 التفاعل اليدوي غير مفعل – استخدم الشات للأوامر</div>
+        <div class="cloud-desktop">
+          <div class="cloud-taskbar">
+            <span>Start</span><span>|</span><span>Explorer</span><span>|</span><span>Media</span>
+          </div>
+          <div class="cloud-body">
+            <p>اكتب: فتح ملف، تشغيل EXE، تحليل مستند، منتاج فيديو…</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel chat">
+      <div class="panel-header">
+        <h2>المساعد AtheerGAI Omega</h2>
+        <span class="badge success">OpenRouter</span>
+      </div>
+
+      <div class="upload-box">
+        <label class="upload-label">
+          📎 رفع ملف (صور/PDF)
+          <input id="fileInput" type="file" accept=".pdf,image/*" hidden>
+        </label>
+        <span id="fileName" class="file-name"></span>
+        <button id="btnProcessFile" class="ghost small">إرسال للوكيل</button>
+      </div>
+
+      <div id="chatWindow" class="chat-window"></div>
+      <div class="chat-input">
+        <textarea id="userInput" rows="2" placeholder="اكتب أمرك هنا..."></textarea>
+        <div class="actions">
+          <button id="btnSend" class="primary">إرسال</button>
+          <button id="btnClear" class="ghost">مسح المحادثة</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="settingsDrawer" class="drawer hidden">
+    <div class="drawer-header">
+      <h3>الإعدادات</h3>
+      <button id="btnCloseSettings">إغلاق</button>
+    </div>
+    <div class="drawer-body">
+      <label>API Base</label>
+      <input id="apiBase" placeholder="https://openrouter.ai/api/v1">
+
+      <label>API Key</label>
+      <input id="apiKey" type="password" placeholder="ضع مفتاح OpenRouter (محفوظ محلياً فقط)">
+
+      <label>Model</label>
+      <input id="model" placeholder="مثال: qwen/qwen-2.5-72b-instruct أو meta-llama/llama-3.1-8b-instruct">
+
+      <label>نغمة / شخصية الوكيل</label>
+      <textarea id="systemPrompt" rows="3"
+        placeholder="وكيل عربي متعدد اللهجات، خبير تطوير ومنتاج، دقيق وعميق التفكير."></textarea>
+
+      <button id="btnSaveSettings" class="primary">حفظ</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="js/mobile.js"></script>
+</body>
+</html>
