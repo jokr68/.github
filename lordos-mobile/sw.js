@@ -1,10 +1,10 @@
 const CACHE = "lordos-cache-v1";
 const ASSETS = [
-  "/",
-  "/index.html",
-  "/css/mobile.css",
-  "/js/mobile.js",
-  "/manifest.json"
+  "./",
+  "./index.html",
+  "./css/mobile.css",
+  "./js/mobile.js",
+  "./manifest.json"
 ];
 
 self.addEventListener("install", e => {

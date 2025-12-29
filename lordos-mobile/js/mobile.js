@@ -108,7 +108,10 @@
         body: JSON.stringify(body)
       });
 
-      if (!res.ok) throw new Error(await res.text());
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`خطأ في الاتصال بـ OpenRouter: ${res.status}`);
+      }
       const data = await res.json();
       const reply = data.choices?.[0]?.message?.content || "لم يصل رد من النموذج.";
       state.messages.pop(); // remove placeholder
@@ -116,7 +119,8 @@
     } catch (err) {
       console.error(err);
       state.messages.pop();
-      appendMessage("assistant", "تعذر الحصول على رد. تحقق من OpenRouter / المفتاح / النموذج.");
+      const errorMsg = err.message || "تعذر الحصول على رد. تحقق من OpenRouter / المفتاح / النموذج.";
+      appendMessage("assistant", errorMsg);
     }
   }
 
@@ -131,10 +135,9 @@
     const file = state.pendingFile;
     if (!file) { showToast("اختر ملفاً أولاً"); return; }
 
-    // هذه خطوة بسيطة: نأخذ Base64 + meta ونرسلها كرسالة نص
+    // هذه خطوة بسيطة: نأخذ meta ونرسلها كرسالة نص
     // لاحقاً يمكن استبدالها بـ OCR/رؤية آلية على الخادم.
-    const base64 = await fileToBase64(file);
-    const summary = `ملف مرفوع:\nالاسم: ${file.name}\nالنوع: ${file.type}\nالحجم: ${file.size} bytes\nالمحتوى(Base64 مختصر): ${base64.slice(0, 120)}...`;
+    const summary = `ملف مرفوع:\nالاسم: ${file.name}\nالنوع: ${file.type}\nالحجم: ${file.size} bytes\n\n(ملاحظة: معالجة المحتوى تتطلب خدمة OCR/رؤية آلية)`;
     await sendMessage(summary);
     showToast("أُرسل للوكيل");
     state.pendingFile = null;
