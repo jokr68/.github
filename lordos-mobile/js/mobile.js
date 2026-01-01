@@ -11,11 +11,16 @@
   const fileInput = document.getElementById("fileInput");
   const fileName = document.getElementById("fileName");
   const btnProcessFile = document.getElementById("btnProcessFile");
+  const btnClearFile = document.getElementById("btnClearFile");
+  const btnExportChat = document.getElementById("btnExportChat");
+  const importChatInput = document.getElementById("importChatInput");
+  const statusBadge = document.getElementById("statusBadge");
 
   const apiBaseEl = document.getElementById("apiBase");
   const apiKeyEl = document.getElementById("apiKey");
   const modelEl = document.getElementById("model");
   const systemPromptEl = document.getElementById("systemPrompt");
+  const quickActions = Array.from(document.querySelectorAll(".quick-action"));
 
   const state = {
     apiBase: "",
@@ -35,6 +40,7 @@
       modelEl.value = state.model || "qwen/qwen-2.5-72b-instruct";
       systemPromptEl.value = state.systemPrompt || "وكيل عربي متعدد اللهجات، خبير تطوير ومنتاج، دقيق وعميق التفكير.";
       renderMessages();
+      updateStatusBadge();
     } catch (e) { console.error(e); }
   }
 
@@ -159,6 +165,67 @@
     setTimeout(() => toast.classList.add("hidden"), 2200);
   }
 
+  function updateStatusBadge() {
+    const hasApi = apiBaseEl.value.trim();
+    const hasModel = modelEl.value.trim();
+    if (hasApi && hasModel) {
+      statusBadge.textContent = "جاهز للاتصال";
+      statusBadge.classList.remove("warning");
+      statusBadge.classList.add("success");
+    } else {
+      statusBadge.textContent = "تحقق من الإعدادات";
+      statusBadge.classList.remove("success");
+      statusBadge.classList.add("warning");
+    }
+  }
+
+  function clearFileSelection() {
+    state.pendingFile = null;
+    fileName.textContent = "";
+    fileInput.value = "";
+  }
+
+  function exportChat() {
+    if (!state.messages.length) {
+      showToast("لا توجد محادثة للتصدير");
+      return;
+    }
+    const payload = {
+      exportedAt: new Date().toISOString(),
+      messages: state.messages
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `lordos-chat-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(link.href);
+    showToast("تم تصدير المحادثة");
+  }
+
+  function importChat(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if (!Array.isArray(parsed.messages)) {
+          throw new Error("صيغة غير صالحة");
+        }
+        state.messages = parsed.messages.filter(m => m && m.role && m.content);
+        saveState();
+        renderMessages();
+        showToast("تم استيراد المحادثة");
+      } catch (err) {
+        console.error(err);
+        showToast("تعذر استيراد الملف");
+      }
+    };
+    reader.readAsText(file);
+  }
+
   btnSend.onclick = () => sendMessage();
   btnClear.onclick = () => { state.messages = []; saveState(); renderMessages(); showToast("تم مسح المحادثة"); };
   btnSettings.onclick = () => drawer.classList.remove("hidden");
@@ -169,6 +236,7 @@
     state.model = modelEl.value.trim() || "qwen/qwen-2.5-72b-instruct";
     state.systemPrompt = systemPromptEl.value.trim();
     saveState();
+    updateStatusBadge();
     drawer.classList.add("hidden");
     showToast("تم الحفظ");
   };
@@ -182,6 +250,15 @@
 
   fileInput.addEventListener("change", e => handleFileSelect(e.target.files[0]));
   btnProcessFile.onclick = processFile;
+  btnClearFile.onclick = clearFileSelection;
+  btnExportChat.onclick = exportChat;
+  importChatInput.addEventListener("change", e => importChat(e.target.files[0]));
+  quickActions.forEach(btn => {
+    btn.addEventListener("click", () => {
+      userInput.value = btn.dataset.template;
+      userInput.focus();
+    });
+  });
 
   loadState();
 })();
