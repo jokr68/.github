@@ -218,7 +218,7 @@
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        if (!reader.result || typeof reader.result !== "string" || reader.result.trim() === "") {
+        if (reader.result === null || reader.result === undefined || typeof reader.result !== "string" || reader.result.trim() === "") {
           throw new Error("الملف فارغ أو غير قابل للقراءة");
         }
         const parsed = JSON.parse(reader.result);
@@ -229,6 +229,7 @@
         state.messages = parsed.messages.filter(m =>
           m &&
           typeof m === "object" &&
+          m.constructor === Object &&
           allowedRoles.includes(m.role) &&
           typeof m.content === "string" &&
           m.content.length > 0
