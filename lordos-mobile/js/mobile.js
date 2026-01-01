@@ -167,8 +167,9 @@
 
   function updateStatusBadge() {
     const hasApi = apiBaseEl.value.trim();
+    const hasKey = apiKeyEl.value.trim();
     const hasModel = modelEl.value.trim();
-    if (hasApi && hasModel) {
+    if (hasApi && hasKey && hasModel) {
       statusBadge.textContent = "جاهز للاتصال";
       statusBadge.classList.remove("warning");
       statusBadge.classList.add("success");
@@ -195,26 +196,44 @@
       messages: state.messages
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const objectUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
+    link.href = objectUrl;
     link.download = `lordos-chat-${Date.now()}.json`;
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(link.href);
+    setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
     showToast("تم تصدير المحادثة");
   }
 
   function importChat(file) {
     if (!file) return;
+    // Limit file size to 5MB to prevent memory issues
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      showToast("الملف كبير جداً (الحد الأقصى 5MB)");
+      return;
+    }
     const reader = new FileReader();
     reader.onload = () => {
       try {
+        if (!reader.result || typeof reader.result !== "string" || reader.result.trim() === "") {
+          throw new Error("الملف فارغ أو غير قابل للقراءة");
+        }
         const parsed = JSON.parse(reader.result);
         if (!Array.isArray(parsed.messages)) {
           throw new Error("صيغة غير صالحة");
         }
-        state.messages = parsed.messages.filter(m => m && m.role && m.content);
+        const allowedRoles = ["user", "assistant", "system"];
+        state.messages = parsed.messages.filter(m =>
+          m &&
+          Object.prototype.toString.call(m) === '[object Object]' &&
+          typeof m.role === "string" &&
+          allowedRoles.includes(m.role) &&
+          typeof m.content === "string" &&
+          m.content.length > 0
+        );
         saveState();
         renderMessages();
         showToast("تم استيراد المحادثة");
@@ -222,6 +241,10 @@
         console.error(err);
         showToast("تعذر استيراد الملف");
       }
+    };
+    reader.onerror = () => {
+      console.error(reader.error);
+      showToast("تعذر قراءة الملف");
     };
     reader.readAsText(file);
   }
