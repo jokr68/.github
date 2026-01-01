@@ -195,13 +195,14 @@
       messages: state.messages
     };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
+    link.href = url;
     link.download = `lordos-chat-${Date.now()}.json`;
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(link.href);
+    URL.revokeObjectURL(url);
     showToast("تم تصدير المحادثة");
   }
 
@@ -211,10 +212,17 @@
     reader.onload = () => {
       try {
         const parsed = JSON.parse(reader.result);
-        if (!Array.isArray(parsed.messages)) {
+        if (!parsed || !parsed.messages || !Array.isArray(parsed.messages)) {
           throw new Error("صيغة غير صالحة");
         }
-        state.messages = parsed.messages.filter(m => m && m.role && m.content);
+        const validRoles = ['user', 'assistant', 'system'];
+        state.messages = parsed.messages.filter(m => 
+          m && 
+          m.role && 
+          validRoles.includes(m.role) && 
+          m.content && 
+          typeof m.content === 'string'
+        );
         saveState();
         renderMessages();
         showToast("تم استيراد المحادثة");
