@@ -61,7 +61,34 @@
     if (!skipPush) state.messages.push({ role, content, time });
     const div = document.createElement("div");
     div.className = `msg ${role === "user" ? "user" : "bot"}`;
-    div.innerHTML = `<span class="role">${role === "user" ? "أنت" : "AtheerGAI"}</span>${escapeHtml(content)}<span class="time">${time}</span>`;
+    
+    const copyBtn = document.createElement("button");
+    copyBtn.className = "copy-btn";
+    copyBtn.textContent = "📋";
+    copyBtn.title = "نسخ النص";
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(content)
+        .then(() => showToast("تم النسخ ✓"))
+        .catch(() => showToast("فشل النسخ"));
+    };
+    
+    // عرض المحتوى: للمستخدم نص عادي، للمساعد Markdown
+    let displayContent;
+    if (role === "user") {
+      displayContent = escapeHtml(content);
+    } else {
+      // استخدام Marked لتحويل Markdown إلى HTML
+      try {
+        displayContent = typeof marked !== 'undefined' 
+          ? marked.parse(content) 
+          : escapeHtml(content);
+      } catch (e) {
+        displayContent = escapeHtml(content);
+      }
+    }
+    
+    div.innerHTML = `<span class="role">${role === "user" ? "أنت" : "AtheerGAI"}</span><div class="content">${displayContent}</div><span class="time">${time}</span>`;
+    div.appendChild(copyBtn);
     chatWindow.appendChild(div);
     chatWindow.scrollTop = chatWindow.scrollHeight;
     if (!skipPush) saveState();
