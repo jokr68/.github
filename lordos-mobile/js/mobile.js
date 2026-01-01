@@ -90,7 +90,7 @@
       return;
     }
 
-    appendMessage("assistant", "… جارٍ المعالجة …");
+    const placeholderMessage = "… جارٍ المعالجة …";
 
     try {
       const body = {
@@ -98,12 +98,13 @@
         messages: [
           ...(sys ? [{ role: "system", content: sys }] : []),
           ...state.messages
-            .filter(m => m.role !== "assistant")
+            .filter(m => !(m.role === "assistant" && m.content === placeholderMessage))
             .map(m => ({ role: m.role, content: m.content })),
-          { role: "user", content: finalUser }
         ],
         stream: false
       };
+
+      appendMessage("assistant", placeholderMessage);
 
       const res = await fetch(apiBase.replace(/\/+$/,"") + "/chat/completions", {
         method: "POST",
