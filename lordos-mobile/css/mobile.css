@@ -19,22 +19,34 @@ p { margin:2px 0 0; color: var(--muted); }
 @media(min-width: 900px){ .layout { grid-template-columns: 1fr 1.2fr; } }
 
 .panel { background: var(--panel); border:1px solid #1f242d; border-radius:12px; padding:16px; box-shadow:0 10px 30px rgba(0,0,0,0.25); }
-.panel-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.panel-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; justify-content:space-between; }
 .badge { padding:4px 10px; border-radius:20px; background:#222; color: var(--muted); font-size:12px; }
 .badge.success { background: rgba(47,129,247,0.15); color: var(--accent); }
+.badge.warning { background: rgba(217,119,6,0.2); color: #fbbf24; border: 1px solid rgba(217,119,6,0.4); }
 
 .cloud-window { border:1px solid #222; border-radius:12px; overflow:hidden; background:#0f141b; }
 .cloud-status { padding:10px; background:#111827; color: var(--muted); border-bottom:1px solid #222; font-size:13px; }
 .cloud-desktop { min-height:280px; position:relative; }
 .cloud-taskbar { position:absolute; bottom:0; left:0; right:0; padding:8px 12px; background:#1c2330; color:#cdd9e5; display:flex; gap:8px; font-size:13px; }
 .cloud-body { padding:16px; color:#cdd9e5; font-size:14px; }
+.quick-actions { margin-top:14px; }
+.quick-actions h3 { margin:0 0 10px; font-size:14px; color: var(--text); }
+.quick-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:8px; }
 
 .chat-window { border:1px solid #222; border-radius:12px; padding:12px; min-height:320px; max-height:70vh; overflow-y:auto; background:#0f141b; }
-.msg { margin:10px 0; padding:10px 12px; border-radius:10px; line-height:1.6; white-space:pre-wrap; }
+.msg { margin:10px 0; padding:10px 12px; border-radius:10px; line-height:1.6; white-space:pre-wrap; position:relative; }
 .msg.user { background:rgba(241,196,15,0.1); border:1px solid rgba(241,196,15,0.3); }
 .msg.bot  { background:rgba(47,129,247,0.08); border:1px solid rgba(47,129,247,0.25); }
 .msg .role { display:block; font-size:12px; color: var(--muted); margin-bottom:4px; }
 .msg .time { display:block; font-size:11px; color: var(--muted); margin-top:6px; }
+.msg .copy-btn { position:absolute; top:8px; left:8px; background:rgba(0,0,0,0.4); border:none; padding:4px 8px; border-radius:6px; cursor:pointer; font-size:14px; opacity:0; transition:opacity 0.2s; }
+.msg:hover .copy-btn { opacity:1; }
+.msg .content { white-space:normal; }
+.msg .content code { background:rgba(0,0,0,0.3); padding:2px 6px; border-radius:4px; font-family:monospace; }
+.msg .content pre { background:rgba(0,0,0,0.4); padding:10px; border-radius:8px; overflow-x:auto; margin:8px 0; }
+.msg .content pre code { background:transparent; padding:0; }
+.msg .content ul, .msg .content ol { margin:8px 0; padding-right:20px; }
+.msg .content a { color:var(--accent); text-decoration:underline; }
 
 .chat-input textarea { width:100%; border:1px solid #222; border-radius:10px; padding:10px; background:#0f141b; color: var(--text); resize:vertical; }
 .actions { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
@@ -56,3 +68,5 @@ button.small { padding:6px 10px; font-size:13px; }
 .upload-box { display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
 .upload-label { border:1px dashed #2f81f7; padding:8px 12px; border-radius:10px; cursor:pointer; }
 .file-name { color: var(--muted); font-size:13px; }
+.chat-toolbar { display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+.import-label { border:1px solid #222; border-radius:10px; padding:6px 10px; cursor:pointer; }

@@ -7,6 +7,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/mobile.css">
   <meta name="theme-color" content="#0d1117" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
 </head>
 <body>
   <header class="app-header">
@@ -24,7 +25,7 @@
     <section class="panel cloud">
       <div class="panel-header">
         <h2>Windows سحابي (عرض فقط)</h2>
-        <span class="badge">الأوامر عبر الوكيل</span>
+        <span id="statusBadge" class="badge">تحقق من الإعدادات</span>
       </div>
       <div class="cloud-window">
         <div class="cloud-status">🔒 التفاعل اليدوي غير مفعل – استخدم الشات للأوامر</div>
@@ -35,6 +36,15 @@
           <div class="cloud-body">
             <p>اكتب: فتح ملف، تشغيل EXE، تحليل مستند، منتاج فيديو…</p>
           </div>
+        </div>
+      </div>
+      <div class="quick-actions">
+        <h3>أوامر سريعة (اضغط للإدراج)</h3>
+        <div class="quick-grid">
+          <button class="ghost small quick-action" data-template="افتح مستكشف الملفات في المسار الحالي ثم اعرض البنية.">📂 فتح المستكشف</button>
+          <button class="ghost small quick-action" data-template="شغّل التطبيق التالي وحدّد إذا كان يحتاج صلاحيات: [اكتب الاسم]">▶️ تشغيل تطبيق</button>
+          <button class="ghost small quick-action" data-template="حلّل هذا المستند وقدّم ملخصًا دقيقًا مع نقاط قرار: [ألصق المحتوى]">📊 تحليل مستند</button>
+          <button class="ghost small quick-action" data-template="جهّز بيئة تطوير Node.js مع الخطوات والأوامر اللازمة.">⚙️ إعداد بيئة تطوير</button>
         </div>
       </div>
     </section>
@@ -52,6 +62,15 @@
         </label>
         <span id="fileName" class="file-name"></span>
         <button id="btnProcessFile" class="ghost small">إرسال للوكيل</button>
+        <button id="btnClearFile" class="ghost small">مسح الملف</button>
+      </div>
+
+      <div class="chat-toolbar">
+        <button id="btnExportChat" class="ghost small">تصدير المحادثة</button>
+        <label class="ghost small import-label">
+          استيراد محادثة
+          <input id="importChatInput" type="file" accept="application/json" hidden>
+        </label>
       </div>
 
       <div id="chatWindow" class="chat-window"></div>
