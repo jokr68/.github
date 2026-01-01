@@ -200,8 +200,8 @@
     link.download = `lordos-chat-${Date.now()}.json`;
     document.body.appendChild(link);
     link.click();
-    link.remove();
     URL.revokeObjectURL(link.href);
+    link.remove();
     showToast("تم تصدير المحادثة");
   }
 
@@ -214,7 +214,7 @@
         if (!Array.isArray(parsed.messages)) {
           throw new Error("صيغة غير صالحة");
         }
-        state.messages = parsed.messages.filter(m => m && m.role && m.content);
+        state.messages = parsed.messages.filter(m => m && m.role && m.content && ["user", "assistant", "system"].includes(m.role));
         saveState();
         renderMessages();
         showToast("تم استيراد المحادثة");
