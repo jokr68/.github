@@ -71,6 +71,13 @@
     return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
   }
 
+  /**
+   * Send the current user input (optionally augmented with extra content) to the configured chat API and append the assistant's reply to the chat.
+   *
+   * Builds a chat payload from the configured system prompt and the current conversation, posts it to the configured API base using the configured model and API key, appends a transient "processing" placeholder message while waiting, and replaces it with the assistant's response when received. If API base or model are not configured, shows a toast and aborts; on network or API errors, replaces the placeholder with an error message.
+   *
+   * @param {string} [extraUserContent] - Optional additional text to append to the user's current input before sending.
+   */
   async function sendMessage(extraUserContent = "") {
     const text = (userInput.value || "").trim();
     if (!text && !extraUserContent) return;
@@ -90,7 +97,7 @@
       return;
     }
 
-    appendMessage("assistant", "… جارٍ المعالجة …");
+    const placeholderMessage = "… جارٍ المعالجة …";
 
     try {
       const body = {
@@ -98,12 +105,13 @@
         messages: [
           ...(sys ? [{ role: "system", content: sys }] : []),
           ...state.messages
-            .filter(m => m.role !== "assistant")
+            .filter(m => !(m.role === "assistant" && m.content === placeholderMessage))
             .map(m => ({ role: m.role, content: m.content })),
-          { role: "user", content: finalUser }
         ],
         stream: false
       };
+
+      appendMessage("assistant", placeholderMessage);
 
       const res = await fetch(apiBase.replace(/\/+$/,"") + "/chat/completions", {
         method: "POST",
