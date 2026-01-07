@@ -1,0 +1,8 @@
+fastapi>=0.110
+uvicorn[standard]>=0.27
+pydantic>=1.10
+pydantic-settings>=2.0; python_version>='3.8'
+sqlalchemy>=2.0
+httpx>=0.25
+redis>=5.0
+chromadb>=0.4
