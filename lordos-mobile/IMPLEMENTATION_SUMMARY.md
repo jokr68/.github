@@ -6,21 +6,22 @@ Successfully implemented a Progressive Web App (PWA) called "LORD'OS Mobile" wit
 ## Files Created
 
 ### Core Application Files
-1. **index.html** (95 lines)
+
+1. **[index.html](https://github.com/jokr68/.github/blob/main/lordos-mobile/index.html)** (95 lines)
    - Arabic RTL layout
    - Chat interface with message display
    - Settings drawer with API configuration
    - File upload component
    - Cloud Windows visual display section
 
-2. **css/mobile.css** (58 lines)
+2. **[css/mobile.css](https://github.com/jokr68/.github/blob/main/lordos-mobile/css/mobile.css)** (58 lines)
    - Dark theme with CSS variables
    - RTL-optimized styling
    - Responsive grid layout
    - Arabic font family support (Noto Sans Arabic, Cairo)
    - Toast notifications styling
 
-3. **js/mobile.js** (184 lines)
+3. **[js/mobile.js](https://github.com/jokr68/.github/blob/main/lordos-mobile/js/mobile.js)** (184 lines)
    - OpenRouter API integration
    - LocalStorage state management
    - File upload handling (images/PDF)
@@ -28,18 +29,18 @@ Successfully implemented a Progressive Web App (PWA) called "LORD'OS Mobile" wit
    - Error handling with Arabic messages
    - Settings persistence
 
-4. **manifest.json** (13 lines)
+4. **[manifest.json](https://github.com/jokr68/.github/blob/main/lordos-mobile/manifest.json)** (13 lines)
    - PWA configuration
    - Arabic language support
    - App icons from CDN
    - Standalone display mode
 
-5. **sw.js** (25 lines)
+5. **[sw.js](https://github.com/jokr68/.github/blob/main/lordos-mobile/sw.js)** (25 lines)
    - Service worker for offline caching
    - Relative paths for subdirectory compatibility
    - Cache-first strategy
 
-6. **README.md** (118 lines)
+6. **[README.md](https://github.com/jokr68/.github/blob/main/lordos-mobile/README.md)** (118 lines)
    - Comprehensive Arabic documentation
    - Setup and installation instructions
    - Usage guide
