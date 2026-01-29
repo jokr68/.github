@@ -28,6 +28,14 @@ lordos-mobile/
 └── README.md          # هذا الملف
 ```
 
+### روابط الملفات على GitHub
+
+- [index.html](https://github.com/jokr68/.github/blob/main/lordos-mobile/index.html) - الصفحة الرئيسية
+- [css/mobile.css](https://github.com/jokr68/.github/blob/main/lordos-mobile/css/mobile.css) - الأنماط
+- [js/mobile.js](https://github.com/jokr68/.github/blob/main/lordos-mobile/js/mobile.js) - منطق التطبيق
+- [manifest.json](https://github.com/jokr68/.github/blob/main/lordos-mobile/manifest.json) - إعدادات PWA
+- [sw.js](https://github.com/jokr68/.github/blob/main/lordos-mobile/sw.js) - Service Worker
+
 ## التثبيت والتشغيل
 
 ### تشغيل محلي
